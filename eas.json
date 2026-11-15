@@ -1,6 +1,22 @@
 {
   "cli": {
     "version": ">= 5.0.0",
+
+{
+  "cli": {
+    "version": ">= 5.0.0",
+    "appVersionSource": "remote",
+    "requireCommit": true
+  },
+  "build": {
+    "production": {
+      "autoIncrement": true,
+      "credentialsSource": "remote",
+      "android": { "buildType": "apk" }
+    }
+  },
+  "submit": { "production": {} }
+}
     "appVersionSource": "remote"
   },
   "build": {
