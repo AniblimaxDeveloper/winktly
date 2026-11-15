@@ -7,14 +7,30 @@
     "userInterfaceStyle": "dark",
     "scheme": "winktly",
     "newArchEnabled": true,
-    "splash": { "backgroundColor": "#0a0a0f", "resizeMode": "contain" },
+    "splash": {
+      "backgroundColor": "#0a0a0f",
+      "resizeMode": "contain"
+    },
     "android": {
       "package": "com.winktly.app",
       "versionCode": 1,
-      "permissions": ["INTERNET", "ACCESS_NETWORK_STATE"],
-      "adaptiveIcon": { "backgroundColor": "#0a0a0f" }
+      "permissions": [
+        "INTERNET",
+        "ACCESS_NETWORK_STATE"
+      ],
+      "adaptiveIcon": {
+        "backgroundColor": "#0a0a0f"
+      }
     },
-    "ios": { "supportsTablet": true, "bundleIdentifier": "com.winktly.app" },
-    "extra": { "eas": { "projectId": "" } }
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.winktly.app"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c5c986f9-c892-425e-85cb-e07060600adf"
+      }
+    },
+    "owner": "aniblimaxdeveloper"
   }
 }
