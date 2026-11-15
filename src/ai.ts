@@ -5,7 +5,7 @@ export const MODELS: AIModel[] = [
   { id: 'llama-3.3-70b-versatile', name: 'Llama 3.3 70B', desc: 'Paling pintar & mendalam', badge: 'PRO' },
   { id: 'llama-3.1-8b-instant',    name: 'Llama 3.1 8B',  desc: 'Super cepat & ringan',   badge: 'FAST' },
   { id: 'gemma2-9b-it',            name: 'Gemma 2 9B',    desc: 'Google Gemma, seimbang', badge: 'GOOGLE' },
-  { id: 'mixtral-8x7b-32768',      name: 'Mixtral 8x7B',  desc: 'Context 32k, untuk dokumen panjang', badge: 'LONG' },
+  { id: 'mixtral-8x7b-32768',      name: 'Mixtral 8x7B',  desc: 'Context 32k, dokumen panjang', badge: 'LONG' },
 ];
 
 export async function chatCompletion(opts: {
@@ -13,8 +13,10 @@ export async function chatCompletion(opts: {
   model: string;
   messages: { role: string; content: string }[];
   systemPrompt?: string;
+  temperature?: number;
+  maxTokens?: number;
 }): Promise<string> {
-  const { apiKey, model, messages, systemPrompt } = opts;
+  const { apiKey, model, messages, systemPrompt, temperature = 0.7, maxTokens = 4096 } = opts;
 
   const finalMessages = systemPrompt?.trim()
     ? [{ role: 'system', content: systemPrompt }, ...messages]
@@ -22,15 +24,12 @@ export async function chatCompletion(opts: {
 
   const res = await fetch(`${BASE_URL}/chat/completions`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
     body: JSON.stringify({
       model,
       messages: finalMessages,
-      temperature: 0.7,
-      max_tokens: 8192,
+      temperature,
+      max_tokens: maxTokens,
       top_p: 0.95,
     }),
   });
