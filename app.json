@@ -34,6 +34,9 @@
         "projectId": "c5c986f9-c892-425e-85cb-e07060600adf"
       }
     },
-    "owner": "aniblimaxdeveloper"
+    "owner": "aniblimaxdeveloper",
+    "plugins": [
+      "expo-font"
+    ]
   }
 }
