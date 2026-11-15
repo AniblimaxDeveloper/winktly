@@ -1,0 +1,68 @@
+name: Build Winktly Release APK
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup Expo & EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Build Release APK (EAS Cloud)
+        id: build
+        run: |
+          eas build --platform android --profile production --non-interactive --wait --json > build.json
+          cat build.json
+          APK_URL=$(jq -r '.[0].artifacts.buildUrl' build.json)
+          echo "APK_URL=$APK_URL" >> $GITHUB_ENV
+
+      - name: Download APK
+        run: curl -L -o winktly-release.apk "${{ env.APK_URL }}"
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: winktly-release-apk
+          path: winktly-release.apk
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: winktly-release.apk
+          name: Winktly ${{ github.ref_name }}
+          body: |
+            ## Winktly ${{ github.ref_name }} — Release APK
+
+            AI asisten serba bisa — dark UI, multi-model, chat dengan AI.
+
+            ### Instalasi
+            1. Download `winktly-release.apk` di bawah
+            2. Izinkan install dari sumber tidak dikenal
+            3. Buka app → tab **Settings** → masukkan API key Groq gratis dari [console.groq.com/keys](https://console.groq.com/keys)
+            4. Mulai chat!
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
