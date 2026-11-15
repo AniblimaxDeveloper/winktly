@@ -16,7 +16,6 @@
     "production": {
       "autoIncrement": true,
       "credentialsSource": "remote",
-      "clean": true,
       "android": { "buildType": "apk" }
     }
   },
