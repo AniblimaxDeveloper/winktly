@@ -4,7 +4,6 @@ on:
   push:
     tags:
       - 'v*'
-  workflow_dispatch:
 
 permissions:
   contents: write
@@ -30,12 +29,12 @@ jobs:
           packager: npm
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm install
 
-      - name: Build Release APK (EAS Cloud)
+      - name: Build Release APK (EAS Cloud - Clean Cache)
         id: build
         run: |
-          eas build --platform android --profile production --non-interactive --wait --json > build.json
+          eas build --platform android --profile production --clear-cache --non-interactive --wait --json > build.json
           cat build.json
           APK_URL=$(jq -r '.[0].artifacts.buildUrl' build.json)
           echo "APK_URL=$APK_URL" >> $GITHUB_ENV
@@ -56,14 +55,8 @@ jobs:
           name: Winktly ${{ github.ref_name }}
           body: |
             ## Winktly ${{ github.ref_name }} — Release APK
-
-            AI asisten serba bisa — dark UI, multi-model, chat dengan AI.
-
-            ### Instalasi
-            1. Download `winktly-release.apk` di bawah
-            2. Izinkan install dari sumber tidak dikenal
-            3. Buka app → tab **Settings** → masukkan API key Groq gratis dari [console.groq.com/keys](https://console.groq.com/keys)
-            4. Mulai chat!
+            
+            Winktly AI Asisten serba bisa. Silakan unduh dan instal.
           draft: false
           prerelease: false
         env:
